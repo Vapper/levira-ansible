@@ -1,0 +1,137 @@
+---
+- name: Ansible manager KVM guest setup
+  hosts: ansible-manager
+  become: true
+  
+  tasks:
+    - name: Update and upgrade
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Install pip
+      apt:
+        name: python-pip
+
+    - name: Create Virtualenv dirs
+      file:
+        path: /home/vagrant/venvs
+        state: directory
+
+    - name: install vitenvs
+      apt:
+        name: python-virtualenv
+
+    - name: Install anisible v2.8.0 to virtualenv
+      pip:
+        name: ansible
+        version: 2.8.0
+        virtualenv: /home/vagrant/venvs/ansible2.8.0
+
+    - name: Install anisible v2.9.0 to virtualenv
+      pip:
+        name: ansible
+        version: 2.8.0
+        virtualenv: /home/vagrant/venvs/ansible2.9.0
+
+
+
+- name: CentOS KVM guest setup
+  hosts: cockpit-cent
+  become: yes
+  #become_user: root
+
+  tasks:
+
+    - name: Start firewalld
+      service:
+        state: restarted
+        name: firewalld
+      become_user: root
+
+    - name: Install and start Cockpit
+      yum:
+        name: cockpit
+        state: latest
+      become_user: root
+    
+    - name: Enable Cockpit
+      systemd:
+        name: cockpit
+        state: started
+        enabled: yes
+      become: true
+
+    - name: Make a dir for changing port
+      file:
+        path: /etc/systemd/system/cockpit.socket.d/
+        state: directory
+
+    - name: Create a file with new port info
+      copy: 
+        src=listen.conf
+        dest=/etc/systemd/system/cockpit.socket.d/listen.conf
+    
+    - name: Allow cockpit on firewalld
+      firewalld:
+         service: cockpit
+         permanent: true
+         state: enabled
+         zone: public
+      become_user: root
+
+    - name: Restart firewalld
+      service:
+        state: restarted
+        name: firewalld
+      become_user: root
+
+    - name: Restart Cockpit service
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: yes
+        name: cockpit.service
+
+
+
+- name: Debian KVM guest setup
+  hosts: cockpit-deb
+  become: yes
+  #become_user: root
+
+  tasks:
+    - name: Update and upgrade
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Install and start Cockpit
+      apt:
+        name: cockpit
+        state: latest
+      become_user: root
+    
+    - name: Enable Cockpit
+      systemd:
+        name: cockpit
+        state: started
+        enabled: yes
+      become: true
+
+    - name: Make a dir for changing port
+      file:
+        path: /etc/systemd/system/cockpit.socket.d/
+        state: directory
+
+    - name: Create a file with new port info
+      copy: 
+        src=listen.conf
+        dest=/etc/systemd/system/cockpit.socket.d/listen.conf
+
+    - name: Restart Cockpit service
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: yes
+        name: cockpit.service
