@@ -5,9 +5,6 @@ Vagrant.require_version ">= 1.7.0"
 
 Vagrant.configure(2) do |config|
 
-  #Shouldn't be neccessary
-  #config.vm.provider "libvirt"
-
   # Ansible guest
   config.vm.define "ansible-manager" do |cnf|
     cnf.vm.box = "generic/debian10"

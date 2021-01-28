@@ -1,10 +1,12 @@
-    Paigalda KVM hosti, installeri vajalikud eeldused (Vagrant, Ansible)
+    Paigalda KVM hosti, installeri vajalikud eeldused (Vagrant, libvirt plugin, Ansible)
 
     ==================
 
     curl -O https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
 
     sudo apt install ./vagrant_2.2.14_x86_64.deb
+
+    vagrant plugin install vagrant-libvirt
 
     sudo apt install ansible
 
