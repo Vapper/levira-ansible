@@ -12,6 +12,8 @@
 
     sudo apt install ansible
 
+    sudo apt install qemu-kvm, qemu-utils, gcc
+
 
     Ehita KVM hosti Ansible labor
 
