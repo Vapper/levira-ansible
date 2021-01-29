@@ -28,4 +28,4 @@
 
     ./ssh_init.sh  
 
-    ansible -i hosts all -m ping
+    ansible -i hosts all -m ping -u vagrant
