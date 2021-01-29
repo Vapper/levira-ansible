@@ -24,6 +24,8 @@
 
     Ansible labori hostide SSH ligipääsude test
 
-    ===========================================   
+    =========================================== 
+
+    ./ssh_init.sh  
 
     ansible -i hosts all -m ping

@@ -11,7 +11,7 @@
     sudo apt install ansible
 
     sudo apt install qemu-kvm, qemu-utils, gcc
-    
+
 
     Ehita KVM hosti Ansible labor
 
@@ -23,5 +23,7 @@
     Ansible labori hostide SSH ligipääsude test
 
     ===========================================   
+
+    ./ssh_init.sh
 
     ansible -i hosts all -m ping
